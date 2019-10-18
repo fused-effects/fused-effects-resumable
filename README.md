@@ -4,4 +4,4 @@
 [![BSD3 license](https://img.shields.io/badge/license-BSD3-blue.svg)](LICENSE)
 [![Build status](https://secure.travis-ci.org/patrickt/fused-effects-resumable.svg)](https://travis-ci.org/patrickt/fused-effects-resumable)
 
-Resumable exceptions for the fused-effects ecosystem.
+This package provides resumable exceptions for the fused-effects ecosystem.

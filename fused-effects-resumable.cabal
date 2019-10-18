@@ -22,12 +22,17 @@ source-repository head
 
 library
   hs-source-dirs:      src
-  exposed-modules:     FusedEffectsResumable
+  exposed-modules:     Control.Carrier.Resumable.Either
+                       Control.Carrier.Resumable.Resume
+                       Control.Effect.Resumable
 
 
-  build-depends:       base ^>= 4.12.0.0
-                     , fused-effects
-
+  build-depends:
+      base           >= 4.9 && < 4.14
+    , deepseq       ^>= 1.4.3
+    , fused-effects
+    , unliftio-core ^>= 0.1.2
+    , transformers   >= 0.4 && < 0.6
 
   ghc-options:         -Wall
                        -Wincomplete-uni-patterns
