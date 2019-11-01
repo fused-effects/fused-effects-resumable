@@ -2,7 +2,7 @@ cabal-version:       2.0
 name:                fused-effects-resumable
 version:             0.1.0.0
 synopsis:            Resumable exceptions for the fused-effects ecosystem.
-description:         Resumable exceptions for the fused-effects ecosystem.
+description:         Provides an effect and carrier capable of resuming control flow from an exceptoin handler.
 homepage:            https://github.com/fused-effects/fused-effects-resumable
 bug-reports:         https://github.com/fused-effects/fused-effects-resumable/issues
 license:             BSD3
@@ -30,8 +30,7 @@ library
   build-depends:
       base           >= 4.9 && < 4.14
     , deepseq       ^>= 1.4.3
-    , fused-effects
-    , unliftio-core ^>= 0.1.2
+    , fused-effects ^>= 1
     , transformers   >= 0.4 && < 0.6
 
   ghc-options:         -Wall

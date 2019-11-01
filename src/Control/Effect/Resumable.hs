@@ -12,12 +12,11 @@ module Control.Effect.Resumable
   Resumable(..)
 , throwResumable
   -- * Re-exports
-, Carrier
 , Has
 , run
 ) where
 
-import Control.Carrier
+import Control.Algebra
 
 -- | Errors which can be resumed with values of some existentially-quantified type.
 --
@@ -31,7 +30,7 @@ instance HFunctor (Resumable err) where
   hmap f (Resumable err k) = Resumable err (f . k)
 
 instance Effect (Resumable err) where
-  handle state handler (Resumable err k) = Resumable err (handler . (<$ state) . k)
+  thread state handler (Resumable err k) = Resumable err (handler . (<$ state) . k)
 
 -- | Throw an error which can be resumed with a value of its result type. Note that the type parameters in the @err a@ paramater and @m a@ parameter must match up; this indicates the type with which the error must be resumed.
 --

@@ -10,14 +10,13 @@ module Control.Carrier.Resumable.Resume
 ) where
 
 import Control.Applicative (Alternative(..))
-import Control.Carrier
+import Control.Algebra
 import Control.Carrier.Reader
 import Control.Effect.Resumable
 import Control.Monad (MonadPlus(..))
 import qualified Control.Monad.Fail as Fail
 import Control.Monad.Fix
 import Control.Monad.IO.Class
-import Control.Monad.IO.Unlift
 import Control.Monad.Trans.Class
 
 -- | Run a 'Resumable' effect, resuming uncaught errors with a given handler.
@@ -46,15 +45,9 @@ instance MonadTrans (ResumableC err) where
   lift = ResumableC . lift
   {-# INLINE lift #-}
 
-instance MonadUnliftIO m => MonadUnliftIO (ResumableC err m) where
-   askUnliftIO = ResumableC $ withUnliftIO $ \u -> return (UnliftIO (unliftIO u . runResumableC))
-   {-# INLINE askUnliftIO #-}
-   withRunInIO inner = ResumableC $ withRunInIO $ \run -> inner (run . runResumableC)
-   {-# INLINE withRunInIO #-}
-
 newtype Handler err m = Handler { runHandler :: forall x . err x -> m x }
 
-instance Carrier sig m => Carrier (Resumable err :+: sig) (ResumableC err m) where
-  eff (L (Resumable err k)) = ResumableC (ReaderC (\ handler -> runHandler handler err)) >>= k
-  eff (R other)             = ResumableC (eff (R (handleCoercible other)))
-  {-# INLINE eff #-}
+instance Algebra sig m => Algebra (Resumable err :+: sig) (ResumableC err m) where
+  alg (L (Resumable err k)) = ResumableC (ReaderC (\ handler -> runHandler handler err)) >>= k
+  alg (R other)             = ResumableC (alg (R (handleCoercible other)))
+  {-# INLINE alg #-}

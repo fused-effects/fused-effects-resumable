@@ -13,7 +13,7 @@ module Control.Carrier.Resumable.Either
 ) where
 
 import Control.Applicative (Alternative(..))
-import Control.Carrier
+import Control.Algebra
 import Control.Carrier.Error.Either
 import Control.DeepSeq
 import Control.Effect.Resumable
@@ -41,10 +41,10 @@ runResumable = runError . runResumableC
 newtype ResumableC err m a = ResumableC { runResumableC :: ErrorC (SomeError err) m a }
   deriving (Alternative, Applicative, Functor, Monad, Fail.MonadFail, MonadFix, MonadIO, MonadPlus, MonadTrans)
 
-instance (Carrier sig m, Effect sig) => Carrier (Resumable err :+: sig) (ResumableC err m) where
-  eff (L (Resumable err _)) = ResumableC (throwError (SomeError err))
-  eff (R other)             = ResumableC (eff (R (handleCoercible other)))
-  {-# INLINE eff #-}
+instance (Algebra sig m, Effect sig) => Algebra (Resumable err :+: sig) (ResumableC err m) where
+  alg (L (Resumable err _)) = ResumableC (throwError (SomeError err))
+  alg (R other)             = ResumableC (alg (R (handleCoercible other)))
+  {-# INLINE alg #-}
 
 
 -- | An error at some existentially-quantified type index.
