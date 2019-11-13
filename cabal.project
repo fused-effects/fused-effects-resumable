@@ -1,6 +1,2 @@
 packages: .
 
-source-repository-package
-  type: git
-  location: https://github.com/fused-effects/fused-effects.git
-  tag: b2075b88de37b9fc6380762a67d4d1e1aea29614
